@@ -115,4 +115,9 @@ enum s3c_gpio_number {
 
 #define ARCH_NR_GPIOS	(GPIO_BOARD_START + BOARD_NR_GPIOS)
 
+//Xmister
+#define S3C64XX_GPIO_OFF_PART_BASE              S3C64XX_GPA(0)
+#define S3C64XX_GPIO_ALIVE_PART_BASE            S3C64XX_GPK(0)
+#define S3C64XX_GPIO_MEM_PART_BASE              S3C64XX_GPO(0)
+
 #include <asm-generic/gpio.h>

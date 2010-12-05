@@ -1378,7 +1378,8 @@ static struct platform_driver g_qt5480_driver =  {
 static int show_debug_message = 0;
 
 // external variable
-extern struct class *sec_class;
+//Xmister
+// extern struct class *sec_class;
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
     static void qt5480_early_suspend(struct early_suspend*);
@@ -2947,7 +2948,7 @@ void __exit qt5480_exit(void)
     device_remove_file(g_ts_dev, &dev_attr_i2c);
     device_remove_file(g_ts_dev, &dev_attr_debug);
     device_remove_file(g_ts_dev, &dev_attr_setup);
-    device_destroy(sec_class, 0);
+    device_destroy(NULL, 0);
     device_del(g_ts_dev);
 
     i2c_unregister_device(g_qt5480_ts_driver->client);

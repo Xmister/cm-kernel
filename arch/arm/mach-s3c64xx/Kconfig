@@ -106,6 +106,19 @@ config MACH_SMDK6410
 	select S3C64XX_SETUP_FB_24BPP
 	help
 	  Machine support for the Samsung SMDK6410
+	  
+config MACH_SPICA
+	bool "SPICA"
+	select CPU_S3C6410
+	select S3C_DEV_HSMMC
+	select S3C_DEV_HSMMC2
+	select S3C_DEV_I2C1
+	select S3C64xx_SETUP_SDHCI
+	select S3C64XX_SETUP_I2C1
+	select CONFIG_S3C_ADC
+#	select S3C_DMA_PL080_NEW
+	help
+	  Machine support for the Samsung SPICA
 
 # At least some of the SMDK6410s were shipped with the card detect
 # for the MMC/SD slots connected to the same input. This means that

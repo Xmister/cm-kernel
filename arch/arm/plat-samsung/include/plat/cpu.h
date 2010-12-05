@@ -43,6 +43,9 @@ struct cpu_table {
 
 extern void s3c_init_cpu(unsigned long idcode,
 			 struct cpu_table *cpus, unsigned int cputab_size);
+//Xmister
+extern void __init s3c_init_clocks(int xtal);
+extern void __init s3c_init_uarts(struct s3c_uartcfg *cfg, int no);
 
 /* core initialisation functions */
 

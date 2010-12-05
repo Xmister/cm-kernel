@@ -37,6 +37,16 @@ extern struct platform_device s3c64xx_device_pcm1;
 
 extern struct platform_device s3c64xx_device_ac97;
 
+//Xmister
+extern struct platform_device s3c_device_keypad;
+extern struct platform_device s3c_device_camif;
+extern struct platform_device s3c_device_mfc;
+extern struct platform_device s3c_device_g3d;
+extern struct platform_device s3c_device_2d;
+extern struct platform_device s3c_device_rotator;
+extern struct platform_device s3c_device_jpeg;
+extern struct platform_device s3c_device_vpp;
+
 extern struct platform_device s3c_device_ts;
 
 extern struct platform_device s3c_device_fb;

@@ -41,3 +41,4 @@ struct platform_device s3c_device_rtc = {
 	.resource	= s3c_rtc_resource,
 };
 EXPORT_SYMBOL(s3c_device_rtc);
+

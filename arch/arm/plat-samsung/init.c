@@ -23,11 +23,11 @@
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
 
+#include <plat/regs-serial.h>
 #include <plat/cpu.h>
 #include <plat/devs.h>
 #include <plat/clock.h>
 
-#include <plat/regs-serial.h>
 
 static struct cpu_table *cpu;
 
@@ -155,6 +155,41 @@ static int __init s3c_arch_init(void)
 
 	ret = platform_add_devices(s3c24xx_uart_devs, nr_uarts);
 	return ret;
+}
+
+/* s3c_init_clocks
+ *
+ * Initialise the clock subsystem and associated information from the
+ * given master crystal value.
+ *
+ * xtal  = 0 -> use default PLL crystal value (normally 12MHz)
+ *      != 0 -> PLL crystal value in Hz
+*/
+
+//Xmister
+void __init s3c_init_clocks(int xtal)
+{
+        if (xtal == 0)
+                xtal = 12*1000*1000;
+
+        if (cpu == NULL)
+                panic("s3c_init_clocks: no cpu setup?\n");
+
+        if (cpu->init_clocks == NULL)
+                panic("s3c_init_clocks: cpu has no clock init\n");
+        else
+                (cpu->init_clocks)(xtal);
+}
+
+void __init s3c_init_uarts(struct s3c_uartcfg *cfg, int no)
+{
+        if (cpu == NULL)
+                return;
+
+        if (cpu->init_uarts == NULL) {
+                printk(KERN_ERR "s3c_init_uarts: cpu has no uart init\n");
+        } else
+                (cpu->init_uarts)(cfg, no);
 }
 
 arch_initcall(s3c_arch_init);

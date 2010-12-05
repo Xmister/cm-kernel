@@ -32,4 +32,15 @@ extern struct s3c_adc_client *
 
 extern void s3c_adc_release(struct s3c_adc_client *client);
 
+struct s3c_adc_mach_info
+{
+        /* if you need to use some platform data, add in here*/
+        int delay;
+        int presc;
+        int resolution;
+};
+
+void __init s3c_adc_set_platdata(struct s3c_adc_mach_info *pd);
+
+
 #endif /* __ASM_PLAT_ADC_H */

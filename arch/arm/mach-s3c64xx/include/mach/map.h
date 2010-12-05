@@ -101,6 +101,10 @@
 #define VA_VIC0			(S3C_VA_IRQ + 0x00)
 #define VA_VIC1			(S3C_VA_IRQ + 0x10000)
 
+//Xmister
+#define S3C6410_PA_AXI_SYS        (0x7E003000)
+
+
 /* compatibiltiy defines. */
 #define S3C_PA_TIMER		S3C64XX_PA_TIMER
 #define S3C_PA_HSMMC0		S3C64XX_PA_HSMMC0
