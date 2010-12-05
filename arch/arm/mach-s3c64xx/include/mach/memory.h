@@ -15,4 +15,11 @@
 
 #define PHYS_OFFSET     UL(0x50000000)
 
+#define CONSISTENT_DMA_SIZE     (SZ_8M + SZ_4M + SZ_2M)
+
+#define PHYS_SIZE       (256 * 1024 * 1024)
+
+#define CONFIG_RESERVED_MEM_JPEG_MFC_POST_CAMERA
+
+
 #endif

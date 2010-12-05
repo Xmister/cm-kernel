@@ -27,6 +27,8 @@ struct s3c64xx_dvfs {
 	unsigned int vddarm_max;
 };
 
+
+//Xmister - future undervolt here
 static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
 	[0] = { 1000000, 1150000 },
 	[1] = { 1050000, 1150000 },

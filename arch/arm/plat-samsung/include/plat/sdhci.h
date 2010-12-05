@@ -45,6 +45,12 @@ struct s3c_sdhci_platdata {
 			    void __iomem *regbase,
 			    struct mmc_ios *ios,
 			    struct mmc_card *card);
+	//Xmister
+	/* add to deal with EXT_IRQ as a card detect pin */
+	void		(*cfg_ext_cd) (void);
+	unsigned int	(*detect_ext_cd) (void);
+	unsigned int	ext_cd;
+	struct sdhci_host*	sdhci_host;
 };
 
 /**
@@ -272,7 +278,7 @@ static inline void s5pv210_default_sdhci1(void) { }
 static inline void s5pv210_default_sdhci2(void) { }
 #endif /* CONFIG_S5PC100_SETUP_SDHCI */
 
-
+extern void sdhci_s3c_force_presence_change(struct platform_device *pdev);
 
 
 #endif /* __PLAT_S3C_SDHCI_H */

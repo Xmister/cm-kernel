@@ -43,6 +43,24 @@
  * change from one gpio bank to another can be caught.
 */
 
+#define S3C_GPIO_LAVEL(x)	((x >= S3C64XX_GPIO_Q_START) ? "GPQ" : \
+								((x >= S3C64XX_GPIO_P_START) ? "GPP" : \
+								((x >= S3C64XX_GPIO_O_START) ? "GPO" : \
+								((x >= S3C64XX_GPIO_N_START) ? "GPN" : \
+								((x >= S3C64XX_GPIO_M_START) ? "GPM" : \
+								((x >= S3C64XX_GPIO_L_START) ? "GPL" : \
+								((x >= S3C64XX_GPIO_K_START) ? "GPK" : \
+								((x >= S3C64XX_GPIO_J_START) ? "GPJ" : \
+								((x >= S3C64XX_GPIO_I_START) ? "GPI" : \
+								((x >= S3C64XX_GPIO_H_START) ? "GPH" : \
+								((x >= S3C64XX_GPIO_G_START) ? "GPG" : \
+								((x >= S3C64XX_GPIO_F_START) ? "GPF" : \
+								((x >= S3C64XX_GPIO_E_START) ? "GPE" : \
+								((x >= S3C64XX_GPIO_D_START) ? "GPD" : \
+								((x >= S3C64XX_GPIO_C_START) ? "GPC" : \
+								((x >= S3C64XX_GPIO_B_START) ? "GPB" : \
+								((x >= S3C64XX_GPIO_A_START) ? "GPA" : NULL)))))))))))))))))
+
 #define S3C64XX_GPIO_NEXT(__gpio) \
 	((__gpio##_START) + (__gpio##_NR) + CONFIG_S3C_GPIO_SPACE + 1)
 

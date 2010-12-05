@@ -413,6 +413,16 @@ static int sdhci_s3c_resume(struct platform_device *dev)
 #define sdhci_s3c_resume NULL
 #endif
 
+//Xmister
+void sdhci_s3c_force_presence_change(struct platform_device *pdev)
+{
+       struct s3c_sdhci_platdata *pdata = pdev->dev.platform_data;
+
+       printk("%s : Enter\n",__FUNCTION__);
+       mmc_detect_change(pdata->sdhci_host->mmc, msecs_to_jiffies(200));
+}
+EXPORT_SYMBOL_GPL(sdhci_s3c_force_presence_change);
+
 static struct platform_driver sdhci_s3c_driver = {
 	.probe		= sdhci_s3c_probe,
 	.remove		= __devexit_p(sdhci_s3c_remove),

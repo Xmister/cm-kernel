@@ -132,6 +132,7 @@ struct console_cmdline
 #endif
 };
 
+
 #define MAX_CMDLINECONSOLES 8
 
 static struct console_cmdline console_cmdline[MAX_CMDLINECONSOLES];

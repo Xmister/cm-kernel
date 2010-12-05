@@ -19,9 +19,11 @@
 #include <linux/irq.h>
 #include <linux/io.h>
 #include <mach/gpio.h>
+#include <mach/map.h>
 #include <plat/gpio-core.h>
 #include <plat/gpio-cfg.h>
 #include <plat/gpio-cfg-helpers.h>
+#include <mach/regs-gpio.h>
 
 #ifndef DEBUG_GPIO
 #define gpio_dbg(x...) do { } while (0)
@@ -197,3 +199,87 @@ void __init samsung_gpiolib_add_4bit2_chips(struct s3c_gpio_chip *chip,
 		s3c_gpiolib_add(chip);
 	}
 }
+
+int s3c_gpio_slp_cfgpin(unsigned int pin, unsigned int config)
+{
+	struct s3c_gpio_chip *chip = s3c_gpiolib_getchip(pin);
+	void __iomem *reg;
+	unsigned long flags;
+	int offset;
+	u32 con;
+	int shift;
+
+	if (!chip)
+		return -EINVAL;
+	if((chip->base == (S3C64XX_GPK_BASE + 0x4)) ||
+   		(chip->base == (S3C64XX_GPL_BASE + 0x4)) ||
+		(chip->base == S3C64XX_GPM_BASE) ||
+		(chip->base == S3C64XX_GPN_BASE))
+	{
+		return -EINVAL;
+	}
+ 	
+	if(config > 3)
+	{
+		 return -EINVAL;
+	}
+
+	reg = chip->base + 0x0C;
+
+	offset = pin - chip->chip.base;
+	shift = offset * 2;
+
+	local_irq_save(flags);
+	
+	con = __raw_readl(reg);
+	con &= ~(3 << shift);
+        con |= config << shift;
+	 __raw_writel(con, reg);	
+	
+	local_irq_restore(flags);
+
+	return 0;
+}
+EXPORT_SYMBOL(s3c_gpio_slp_cfgpin);
+
+int s3c_gpio_slp_setpull_updown(unsigned int pin, unsigned int config)
+{
+	struct s3c_gpio_chip *chip = s3c_gpiolib_getchip(pin);
+	void __iomem *reg;
+	unsigned long flags;
+	int offset;
+	u32 con;
+	int shift;
+
+	if (!chip)
+		return -EINVAL;
+	if((chip->base == (S3C64XX_GPK_BASE + 0x4)) ||
+		(chip->base == (S3C64XX_GPL_BASE + 0x4)) ||
+		(chip->base == S3C64XX_GPM_BASE) ||
+		(chip->base == S3C64XX_GPN_BASE))
+	{
+		return -EINVAL;
+	}
+	if(config > 3)
+	{
+		return -EINVAL;
+	}
+	reg = chip->base + 0x10;
+
+	offset = pin - chip->chip.base;
+	shift = offset * 2;
+
+	local_irq_save(flags);
+	
+	con = __raw_readl(reg);
+	con &= ~(3 << shift);
+	con |= config << shift;
+	__raw_writel(con, reg);
+
+	con = __raw_readl(reg);
+	
+	local_irq_restore(flags);
+
+	return 0;
+}
+EXPORT_SYMBOL(s3c_gpio_slp_setpull_updown);
