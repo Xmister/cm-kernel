@@ -72,7 +72,7 @@
 #include <plat/gpio-cfg.h>
 #include <linux/android_pmem.h>
 //Xmister
-//#include <linux/i2c/pmic.h>
+#include <linux/i2c/pmic.h>
 
 #include <linux/delay.h> // yoohyuk 2009-03-16 just test codes.
 #include <mach/sec_headset.h>
@@ -662,7 +662,8 @@ static void __init spica_machine_init(void)
 
 	spica_switch_init();
 
-	ftm_enable_usb_sw = spica_ftm_enable_usb_sw;
+	//Xmister
+	//ftm_enable_usb_sw = spica_ftm_enable_usb_sw;
 }
 
 MACHINE_START(SPICA, "SPICA")

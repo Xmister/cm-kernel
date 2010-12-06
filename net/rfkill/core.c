@@ -46,8 +46,8 @@
 				 RFKILL_BLOCK_SW |\
 				 RFKILL_BLOCK_SW_PREV)
 #define RFKILL_BLOCK_SW_SETCALL	BIT(31)
-
-struct rfkill {
+//Xmister move to rfkill.h
+/*struct rfkill {
 	spinlock_t		lock;
 
 	const char		*name;
@@ -74,7 +74,7 @@ struct rfkill {
 	struct delayed_work	poll_work;
 	struct work_struct	uevent_work;
 	struct work_struct	sync_work;
-};
+};*/
 #define to_rfkill(d)	container_of(d, struct rfkill, dev)
 
 struct rfkill_int_event {

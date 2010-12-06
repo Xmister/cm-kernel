@@ -9,7 +9,7 @@
 # * RTC chip drivers go to drivers/rtc
 # * I/O expander drivers go to drivers/gpio
 #
-
+obj-y				+= max8698.o
 obj-$(CONFIG_SENSORS_MT9T013)	+= mt9t013.o
 
 ifeq ($(CONFIG_I2C_DEBUG_CHIP),y)

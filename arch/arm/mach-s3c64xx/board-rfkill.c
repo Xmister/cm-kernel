@@ -21,7 +21,7 @@
 #include <linux/rfkill.h>
 #include <linux/delay.h>
 #include <asm/gpio.h>
-#include <mach/gpio.h>
+//#include <mach/gpio.h>
 #include <mach/spica.h>	/*Updated by kumar.gvs 22 Apr 2009*/
 #include <plat/gpio-cfg.h>
 #include <plat/egpio.h>
@@ -32,7 +32,11 @@
 
 #include <mach/hardware.h>
 //Xmister
-//#include <linux/i2c/pmic.h>
+/* define userspace visible states */
+#define RFKILL_STATE_SOFT_BLOCKED	0
+#define RFKILL_STATE_UNBLOCKED		1
+#define RFKILL_STATE_HARD_BLOCKED	2
+#include <linux/i2c/pmic.h>
 
 #define BT_SLEEP_ENABLER
 
@@ -203,22 +207,27 @@ static int __init spica_rfkill_probe(struct platform_device *pdev)
 	//RFKILL init - default to bluetooth off
 	rfkill_switch_all(RFKILL_TYPE_BLUETOOTH, RFKILL_STATE_SOFT_BLOCKED);
 
-	bt_rfk = rfkill_allocate(&pdev->dev, RFKILL_TYPE_BLUETOOTH);
+	//Xmister
+	//bt_rfk = rfkill_allocate(&pdev->dev, RFKILL_TYPE_BLUETOOTH);
+	bt_rfk = rfkill_alloc(pdev->name,&pdev->dev,RFKILL_TYPE_BLUETOOTH,NULL,NULL);
 	if (!bt_rfk)
 		return -ENOMEM;
 
 	bt_rfk->name = bt_name;
 	bt_rfk->state = RFKILL_STATE_SOFT_BLOCKED;
+	//Xmister
 	/* userspace cannot take exclusive control */
-	bt_rfk->user_claim_unsupported = 1;
-	bt_rfk->user_claim = 0;
+	//bt_rfk->user_claim_unsupported = 1;
+	//bt_rfk->user_claim = 0;
 	bt_rfk->data = NULL;  // user data
-	bt_rfk->toggle_radio = bluetooth_set_power;
+	//bt_rfk->toggle_radio = bluetooth_set_power;
 
 	printk(KERN_DEBUG "[BT] rfkill_register(bt_rfk) \n");
 	rc = rfkill_register(bt_rfk);
 	if (rc)
-		rfkill_free(bt_rfk);
+		//Xmister
+		//rfkill_free(bt_rfk);
+		rfkill_destroy(bt_rfk);
 
 	bluetooth_set_power(NULL, RFKILL_STATE_SOFT_BLOCKED);
 
@@ -292,24 +301,31 @@ static int __init spica_btsleep_probe(struct platform_device *pdev)
 {
 	int rc = 0;
 
-	bt_sleep = rfkill_allocate(&pdev->dev, RFKILL_TYPE_BLUETOOTH);
+	//bt_sleep = rfkill_allocate(&pdev->dev, RFKILL_TYPE_BLUETOOTH);
+	bt_sleep = rfkill_alloc(pdev->name,&pdev->dev,RFKILL_TYPE_BLUETOOTH,NULL,NULL);
+
 	if (!bt_sleep)
 		return -ENOMEM;
 
 	bt_sleep->name = bt_name;
 	bt_sleep->state = RFKILL_STATE_UNBLOCKED;
+	//Xmister
 	/* userspace cannot take exclusive control */
-	bt_sleep->user_claim_unsupported = 1;
-	bt_sleep->user_claim = 0;
+	//bt_sleep->user_claim_unsupported = 1;
+	//bt_sleep->user_claim = 0;
 	bt_sleep->data = NULL;  // user data
-	bt_sleep->toggle_radio = bluetooth_set_sleep;
+	//bt_sleep->toggle_radio = bluetooth_set_sleep;
 
 	rc = rfkill_register(bt_sleep);
 	if (rc)
-		rfkill_free(bt_sleep);
+		//Xmister
+		//rfkill_free(bt_sleep);
+		rfkill_destroy(bt_sleep);
 
 	printk(KERN_DEBUG "[BT] rfkill_force_state(bt_sleep, RFKILL_STATE_UNBLOCKED) \n");
-	rfkill_force_state(bt_sleep, RFKILL_STATE_UNBLOCKED);
+	//Xmister
+	//rfkill_force_state(bt_sleep, RFKILL_STATE_UNBLOCKED);
+	rfkill_set_hw_state(bt_sleep, RFKILL_STATE_UNBLOCKED);
 
 	bluetooth_set_sleep(NULL, RFKILL_STATE_UNBLOCKED);
 

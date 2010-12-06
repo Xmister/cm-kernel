@@ -29,6 +29,11 @@ struct platform_device;
 struct s3c2410_uartcfg;
 struct map_desc;
 
+//Xmister
+/* forward declaration */
+struct s3c_uart_resources;
+struct s3c_uartcfg;
+
 /* per-cpu initialisation function table. */
 
 struct cpu_table {

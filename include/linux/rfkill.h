@@ -21,10 +21,6 @@
 
 #include <linux/types.h>
 
-/* define userspace visible states */
-#define RFKILL_STATE_SOFT_BLOCKED	0
-#define RFKILL_STATE_UNBLOCKED		1
-#define RFKILL_STATE_HARD_BLOCKED	2
 
 /**
  * enum rfkill_type - type of rfkill switch.
@@ -50,6 +46,21 @@ enum rfkill_type {
 	RFKILL_TYPE_FM,
 	NUM_RFKILL_TYPES,
 };
+//Xmister
+enum rfkill_state {
+	RFKILL_STATE_SOFT_BLOCKED = 0,	/* Radio output blocked */
+	RFKILL_STATE_UNBLOCKED    = 1,	/* Radio output allowed */
+	RFKILL_STATE_HARD_BLOCKED = 2,	/* Output blocked, non-overrideable */
+	RFKILL_STATE_MAX,		/* marker for last valid state */
+};
+
+/*
+ * These are DEPRECATED, drivers using them should be verified to
+ * comply with the rfkill usage guidelines in Documentation/rfkill.txt
+ * and then converted to use the new names for rfkill_state
+ */
+#define RFKILL_STATE_OFF RFKILL_STATE_SOFT_BLOCKED
+#define RFKILL_STATE_ON  RFKILL_STATE_UNBLOCKED
 
 /**
  * enum rfkill_operation - operation types
@@ -122,7 +133,57 @@ enum rfkill_user_states {
 #include <linux/err.h>
 
 /* this is opaque */
-struct rfkill;
+//Xmister
+struct rfkill {
+	spinlock_t		lock;
+
+	const char		*name;
+	enum rfkill_type	type;
+
+	unsigned long		state;
+
+	u32			idx;
+
+	bool			registered;
+	bool			persistent;
+
+	const struct rfkill_ops	*ops;
+	void			*data;
+
+#ifdef CONFIG_RFKILL_LEDS
+	struct led_trigger	led_trigger;
+	const char		*ledtrigname;
+#endif
+
+	struct device		dev;
+	struct list_head	node;
+
+	struct delayed_work	poll_work;
+	struct work_struct	uevent_work;
+	struct work_struct	sync_work;
+};
+/* struct rfkill {
+	const char *name;
+	enum rfkill_type type;
+
+	bool user_claim_unsupported;
+	bool user_claim;
+
+	struct mutex mutex;
+	enum rfkill_state state;
+	void *data;
+	int (*toggle_radio)(void *data, enum rfkill_state state);
+	int (*get_state)(void *data, enum rfkill_state *state);
+
+#ifdef CONFIG_RFKILL_LEDS
+	struct led_trigger led_trigger;
+#endif
+
+	struct device dev;
+	struct list_head node;
+	enum rfkill_state state_for_resume;
+};
+*/
 
 /**
  * struct rfkill_ops - rfkill driver methods

@@ -277,7 +277,7 @@ static __init void s3c64xx_gpiolib_add(struct s3c_gpio_chip *chips,
 	}
 }
 
-static __init int s3c64xx_gpiolib_init(void)
+__init int s3c64xx_gpiolib_init(void)
 {
 	s3c64xx_gpiolib_add(gpio_4bit, ARRAY_SIZE(gpio_4bit),
 			    samsung_gpiolib_add_4bit);
