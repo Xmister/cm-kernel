@@ -69,7 +69,7 @@
 #define DEV_USB_CHG            (1 << 5) 
 #define DEV_CAR_KIT            (1 << 4) 
 #define DEV_UART               (1 << 3) 
-#define DEV_USB                        (1 << 2) 
+#define DEV_USB                (1 << 2) 
 #define DEV_AUDIO_2            (1 << 1) 
 #define DEV_AUDIO_1            (1 << 0) 
  
@@ -217,22 +217,15 @@ int get_usb_cable_state(void)
 { //Xmister
 	struct fsa9480_usbsw *usbsw = chip; 
        struct i2c_client *client = usbsw->client; 
-       unsigned int value; 
+       int dev1, dev2; 
  
-       value = fsa9480_read_reg(client, FSA9480_REG_MANSW1); 
+       dev1 = fsa9480_read_reg(client, FSA9480_REG_DEV_T1); 
+       dev2 = fsa9480_read_reg(client, FSA9480_REG_DEV_T2); 
  
-       if (value == SW_VAUDIO) 
-               return 1;
-       else if (value == SW_UART) 
-               return 2; 
-       else if (value == SW_AUDIO) 
-               return 3; 
-       else if (value == SW_DHOST) 
-               return 4; 
-       else if (value == SW_AUTO) 
-               return 5; 
-       else 
-               return 0; 
+       if (!dev1 && !dev2) 
+               return 0;
+ 
+       return (dev2 << 8) | (dev1 << 0);
 }
  
 static ssize_t fsa9480_show_device(struct device *dev, 
